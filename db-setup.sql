@@ -13,9 +13,9 @@
 --     description VARCHAR(255) NOT NULL,
 --     userId VARCHAR(255),
 --     INDEX userId (userId),
---     FOREIGN KEY (userId)
---         REFERENCES users(id)
---         ON DELETE CASCADE,  
+--     FOREIGN KEY (userId),
+--     REFERENCES users(id),
+--     ON DELETE CASCADE,  
 --     PRIMARY KEY (id)
 -- );
 
@@ -30,9 +30,9 @@
 --     shares INT DEFAULT 0,
 --     keeps INT DEFAULT 0,     
 --     INDEX userId (userId),
---     FOREIGN KEY (userId)
---         REFERENCES users(id)
---         ON DELETE CASCADE,  
+--     FOREIGN KEY (userId),
+--     REFERENCES users(id),
+--     ON DELETE CASCADE,  
 --     PRIMARY KEY (id)
 -- );
 

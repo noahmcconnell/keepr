@@ -14,6 +14,15 @@ namespace keepr.Controllers
     {
         private readonly UserRepository _repo;
 
+        [HttpGet("{userId}")]
+        public User getAuthor([FromRoute] string userId)
+        {
+            User user = _repo.GetUserById(userId);
+            if (user == null) throw new Exception("Couldn't retieve user.");
+            user.Email = null;
+            return user;
+        }
+
         [HttpPost("Login")]
         public async Task<User> Login([FromBody]UserLogin creds)
         {
