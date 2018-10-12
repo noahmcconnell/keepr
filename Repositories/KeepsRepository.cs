@@ -14,8 +14,21 @@ namespace keepr.Repositories
         {
             _db = db;
         }
+        public Keep GetById(int id)
+        {
+            return _db.Query<Keep>("SELECT * FROM keeps WHERE id = @id", new { id }).FirstOrDefault();
+        }
+        public IEnumerable<Keep> GetKeepByUserId(string id)
+        {
+            return _db.Query<Keep>(@"
+            SELECT * FROM keeps
+            WHERE userId = @id", new { id });
+        }
+        public IEnumerable<Keep> GetPublicKeeps()
+        {
+            return _db.Query<Keep>(" SELECT * FROM keeps WHERE isprivate = 0");
+        }
 
-        // GET ALL KEEPS
         public IEnumerable<Keep> GetAll()
         {
             return _db.Query<Keep>("SELECT * FROM keeps");
@@ -25,13 +38,7 @@ namespace keepr.Repositories
         {
             return _db.ExecuteScalar<int>("SELECT count(*) WHERE keepId = @keepId ", new {keepId});
         }
-        // GET KEEPS BY ID
-        public Keep GetById(int id)
-        {
-            return _db.Query<Keep>("SELECT * FROM keeps WHERE id = @id", new { id }).FirstOrDefault();
-        }
 
-        // CREATE KEEP
         public Keep Create(Keep keep)
         {
             int id = _db.ExecuteScalar<int>(@"
@@ -43,7 +50,6 @@ namespace keepr.Repositories
             return keep;
         }
 
-        // UPDATE KEEP
         public Keep Update(Keep keep)
         {
             _db.Execute(@"UPDATE keeps
@@ -52,25 +58,12 @@ namespace keepr.Repositories
             return keep;
         }
 
-        // DELETE KEEP
         public bool Delete(int id)
         {
             int successfulDelete = _db.Execute("DELETE FROM keeps WHERE id = @id", new { id });
             return successfulDelete == 1;
         }
 
-        // GET KEEP BY USER ID
-        public IEnumerable<Keep> GetKeepByUserId(string id)
-        {
-            return _db.Query<Keep>(@"
-            SELECT * FROM keeps
-            WHERE userId = @id", new { id });
-        }
 
-        // GET PUBLIC KEEPS
-        public IEnumerable<Keep> GetPublicKeeps()
-        {
-            return _db.Query<Keep>(" SELECT * FROM keeps WHERE isprivate = 0");
-        }
     }
 }

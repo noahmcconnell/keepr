@@ -68,8 +68,7 @@ export default {
         });
       }
     },
-    showAvailableVaults() {}
-  }
+}
 };
 </script>
 

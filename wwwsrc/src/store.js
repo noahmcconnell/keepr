@@ -1,4 +1,3 @@
-
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Axios from 'axios'
@@ -105,10 +104,19 @@ export default new Vuex.Store({
     },
     addKeep({ commit, dispatch }, keepData) {
       api.post('keeps', keepData)
-        .then(res => {
-          dispatch('getKeeps')
-        })
+      .then(res => {
+        dispatch('getKeeps')
+      })
     },
+                deleteKeep({ commit, dispatch }, keepId) {
+                  api.delete('keeps/' + keepId)
+                    .then(res => {
+                      dispatch('getKeeps')
+                    })
+                    .catch(e => {
+                      console.log('error:', e)
+                    })
+                },
     addKeepView({ commit, dispatch }, keepId) {
       api.get(`keeps/${keepId}/addView`)
         .then(res => {
@@ -121,19 +129,19 @@ export default new Vuex.Store({
           dispatch('getKeeps')
         })
     },
-    deleteKeep({ commit, dispatch }, keepId) {
-      api.delete('keeps/' + keepId)
-        .then(res => {
-          dispatch('getKeeps')
-        })
-        .catch(e => {
-          console.log('error:', e)
-        })
-    },
 
     // VAULTS
     getVaults({ commit, dispatch }, id) {
       api.get('vaults')
+        .then(res => {
+          commit('setVaults', res.data)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    getVaultsByUserId({ commit, dispatch }, id) {
+      api.get('vaults/byuser/' + id)
         .then(res => {
           commit('setVaults', res.data)
         })
@@ -148,15 +156,6 @@ export default new Vuex.Store({
         commit('selectedVaultkeeps', res.data)
       })
       .catch(console.error);
-    },
-    getVaultsByUserId({ commit, dispatch }, id) {
-      api.get('vaults/byuser/' + id)
-        .then(res => {
-          commit('setVaults', res.data)
-        })
-        .catch(e => {
-          console.log(e)
-        })
     },
     addVault({ commit, dispatch }, vaultData) {
       api.post('vaults', vaultData)

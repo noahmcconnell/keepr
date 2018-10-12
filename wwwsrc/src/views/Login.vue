@@ -50,7 +50,6 @@
     export default {
         name: "login",
         mounted() {
-            //checks for valid session
             this.$store.dispatch("authenticate");
             if (this.signUp == "true") {
                 this.loginForm = false;

@@ -9,14 +9,9 @@ namespace keepr.Repositories
 {
     public class UserRepository
     {
-
         IDbConnection _db;
-
-        //REGISTER
         public User Register(UserRegistration creds)
         {
-            //generate the user id
-            //HASH THE PASSWORD
             string id = Guid.NewGuid().ToString();
             string hash = BCrypt.Net.BCrypt.HashPassword(creds.Password);
             int success = _db.Execute(@"
@@ -40,8 +35,6 @@ namespace keepr.Repositories
                 Id = id
             };
         }
-
-        //LOGIN 
         public User Login(UserLogin creds)
         {
             User user = _db.Query<User>(@"
@@ -65,20 +58,9 @@ namespace keepr.Repositories
             }
             return user;
         }
-
-
-        //Update   u
-        //CHANGE PASS u
-        //DELETE   D
-
-
-
         public UserRepository(IDbConnection db)
         {
             _db = db;
         }
-
-
-
     }
 }
