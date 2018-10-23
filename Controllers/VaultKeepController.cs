@@ -12,7 +12,6 @@ namespace keepr.Controllers
   [ApiController]
   public class VaultkeepController : Controller
   {
-
     VaultkeepRepository _repo;
     public VaultkeepController(VaultkeepRepository repo)
     {
@@ -25,7 +24,6 @@ namespace keepr.Controllers
       return _repo.GetAllUserVaultKeeps(HttpContext.User.Identity.Name);
     }
 
-    //gets keeps by vault id
     [HttpGet("{id}")]
     public IEnumerable<Keep> getallkeepsinvault([FromRoute] int id)
     {
@@ -54,7 +52,5 @@ namespace keepr.Controllers
     {
       _repo.Delete(id);
     }
-
   }
-
 }

@@ -5,7 +5,6 @@ using System.Security.Claims;
 
 namespace keepr.Models
 {
-
     public class UserLogin // HELPER MODEL
     {
         [Required]
@@ -17,7 +16,6 @@ namespace keepr.Models
     }
     public class UserRegistration // HELPER MODEL
     {
-
         [Required]
         public string Username { get; set; }
 
@@ -28,7 +26,6 @@ namespace keepr.Models
         [MinLength(6)]
         public string Password { get; set; }
     }
-
     public class User
     {
         public string Id { get; set; }
@@ -40,9 +37,6 @@ namespace keepr.Models
         [Required]
         internal string Hash { get; set; }
         internal ClaimsPrincipal _principal { get; private set; }
-
-
-
         internal void SetClaims()
         {
             var claims = new List<Claim>{

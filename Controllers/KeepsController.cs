@@ -26,6 +26,12 @@ namespace keepr.Controllers
             return _repo.GetAll();
         }
 
+        [HttpGet("byuser/{id}")]
+        public IEnumerable<Keep> Get(string id)
+        {
+            return _repo.GetByUserId(id);
+        }
+
         [HttpGet("{id}/vaultCount")]
         public int GetVaultCount(int id)
         {
@@ -60,7 +66,6 @@ namespace keepr.Controllers
             _repo.Update(keep);
             return keep.Shares;
         }
-
 
         [Authorize]
         [HttpDelete("{id}")]

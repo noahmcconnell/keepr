@@ -13,7 +13,10 @@ namespace keepr.Repositories
         {
             _db = db;
         }
-
+        public IEnumerable<Vault> GetAll()
+        {
+            return _db.Query<Vault>("SELECT * FROM vaults");
+        }
         public Vault GetById(int id)
         {
             return _db.Query<Vault>("SELECT * FROM vaults WHERE id = @id", new { id }).FirstOrDefault();
@@ -21,28 +24,6 @@ namespace keepr.Repositories
         public IEnumerable<Vault> GetByUserId(string id)
         {
             return _db.Query<Vault>("SELECT * FROM vaults WHERE userid = @id", new { id });
-        }
-        public IEnumerable<Vault> GetAll()
-        {
-            return _db.Query<Vault>("SELECT * FROM vaults");
-        }
-
-        public IEnumerable<Vault> GetVaultByUserId(string id)
-        {
-            return _db.Query<Vault>(@"
-            SELECT * FROM vaults
-            WHERE userId = @id", new { id });
-        }
-
-        public IEnumerable<Keep> GetKeeps(int vaultId)
-        {
-            return _db.Query<Keep>(@"
-            SELECT * FROM keeps 
-            WHERE id in (
-                SELECT keepid FROM vaultkeeps 
-                WHERE vaultid = @vaultId
-            )
-            ", new {vaultId});
         }
         public Vault Create(Vault vault)
         {
@@ -65,6 +46,22 @@ namespace keepr.Repositories
         {
             int successfulDelete = _db.Execute("DELETE FROM vaults WHERE id = @id", new { id });
             return successfulDelete == 1;
+        }
+        public IEnumerable<Vault> GetVaultByUserId(string id)
+        {
+            return _db.Query<Vault>(@"
+            SELECT * FROM vaults
+            WHERE userId = @id", new { id });
+        }
+        public IEnumerable<Keep> GetKeeps(int vaultId)
+        {
+            return _db.Query<Keep>(@"
+            SELECT * FROM keeps 
+            WHERE id in (
+                SELECT keepid FROM vaultkeeps 
+                WHERE vaultid = @vaultId
+            )
+            ", new {vaultId});
         }
     }
 }

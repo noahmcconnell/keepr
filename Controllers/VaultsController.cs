@@ -29,6 +29,7 @@ namespace keepr.Controllers
         [HttpGet("byuser/{id}")]
         public IEnumerable<Vault> Get(string id)
         {
+            id = HttpContext.User.Identity.Name;
             return _repo.GetByUserId(id);
         }
 

@@ -10,6 +10,9 @@ namespace keepr.Repositories {
         public VaultkeepRepository(IDbConnection db) {
             _db = db;
         }
+        public IEnumerable<Vaultkeep> GetAll() {
+            return _db.Query<Vaultkeep>("SELECT * FROM vaultkeeps;");
+        }
         public Vaultkeep GetById(int id) {
             return _db.Query<Vaultkeep>(@"Select * from vaultkeeps where id = @id", new { id }).FirstOrDefault();
         }
@@ -19,10 +22,6 @@ namespace keepr.Repositories {
                   INNER JOIN keeps k ON k.id = vk.keepId
                   WHERE (vaultId = @vaultId)", new { vaultId });
         }
-        public IEnumerable<Vaultkeep> GetAll() {
-            return _db.Query<Vaultkeep>("SELECT * FROM vaultkeeps;");
-        }
-
         public IEnumerable<Vaultkeep> GetAllUserVaultKeeps(string id) {
             return _db.Query<Vaultkeep>("SELECT * FROM vaultkeeps WHERE id = @id;", new { id });
         }
@@ -50,6 +49,5 @@ namespace keepr.Repositories {
             UpdateKeepCount(vk.KeepId);
             return _db.Execute("DELETE FROM vaultkeeps WHERE id = @id", new { id });
         }
-
     }
 }

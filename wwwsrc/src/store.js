@@ -45,7 +45,6 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    // AUTH
     register({ commit, dispatch }, newUser) {
       auth.post('register', newUser)
         .then(res => {
@@ -90,33 +89,30 @@ export default new Vuex.Store({
           router.push({ name: 'login' })
         })
     },
-
-    // KEEPS
     getKeeps({ commit, dispatch }) {
       api.get('keeps')
         .then(res => {
           commit('setKeeps', res.data)
         })
-
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    getKeepsByUserId({ commit, dispatch }, id) {
+      api.get('keeps/byuser/' + id)
+        .then(res => {
+          commit('setKeeps', res.data)
+        })
         .catch(e => {
           console.log(e)
         })
     },
     addKeep({ commit, dispatch }, keepData) {
       api.post('keeps', keepData)
-      .then(res => {
-        dispatch('getKeeps')
-      })
+        .then(res => {
+          dispatch('getKeeps')
+        })
     },
-                deleteKeep({ commit, dispatch }, keepId) {
-                  api.delete('keeps/' + keepId)
-                    .then(res => {
-                      dispatch('getKeeps')
-                    })
-                    .catch(e => {
-                      console.log('error:', e)
-                    })
-                },
     addKeepView({ commit, dispatch }, keepId) {
       api.get(`keeps/${keepId}/addView`)
         .then(res => {
@@ -129,19 +125,17 @@ export default new Vuex.Store({
           dispatch('getKeeps')
         })
     },
-
-    // VAULTS
-    getVaults({ commit, dispatch }, id) {
-      api.get('vaults')
+    deleteKeep({ commit, dispatch }, keepId) {
+      api.delete('keeps/' + keepId)
         .then(res => {
-          commit('setVaults', res.data)
+          dispatch('getKeeps')
         })
         .catch(e => {
-          console.log(e)
+          console.log('error:', e)
         })
     },
-    getVaultsByUserId({ commit, dispatch }, id) {
-      api.get('vaults/byuser/' + id)
+    getVaults({ commit, dispatch }, id) {
+      api.get('vaults')
         .then(res => {
           commit('setVaults', res.data)
         })
@@ -157,14 +151,23 @@ export default new Vuex.Store({
       })
       .catch(console.error);
     },
+    getVaultsByUserId({ commit, dispatch }, id) {
+      api.get('vaults/byuser/' + id)
+        .then(res => {
+          commit('setVaults', res.data)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    },
     addVault({ commit, dispatch }, vaultData) {
       api.post('vaults', vaultData)
         .then(res => {
-          dispatch('getVaults')
+          dispatch('getVaultsByUserId')
         })
     },
-    addKeepToVaults({ commit, dispatch }, vKeepData) {
-      api.post('vaultkeeps', vKeepData)
+    addKeepToVault({ commit, dispatch }, vkData) {
+      api.post('vaultkeep', vkData)
         .catch(e => {
           console.log('error:', e)
         })
@@ -172,7 +175,7 @@ export default new Vuex.Store({
     deleteVault({ commit, dispatch }, vaultId) {
       api.delete('vaults/' + vaultId)
         .then(res => {
-          dispatch('getVaults')
+          dispatch('getVaultsByUserId')
         })
         .catch(e => {
           console.log('error:', e)

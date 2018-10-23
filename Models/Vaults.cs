@@ -9,13 +9,9 @@ namespace keepr.Models
     public class Vault
     {
         public int Id { get; set; }
-
         public string Name { get; set; }
-
         public string Description {get; set;}
-
         public string UserId { get; set; }
-
         public Vault() { }
         public Vault(string name, string description, string userid)
         {
@@ -24,7 +20,6 @@ namespace keepr.Models
             UserId = userid;
         }
     }
-
     public class DeleteUserVault
     {
         public int Id { get; set; }
